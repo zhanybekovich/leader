@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\WebsiteConfigResource\Pages;
 use App\Filament\Resources\WebsiteConfigResource\RelationManagers;
 use App\Models\WebsiteConfig;
+use Awcodes\Curator\Components\Forms\CuratorPicker;
+use Awcodes\Curator\PathGenerators\DatePathGenerator;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -23,24 +25,27 @@ class WebsiteConfigResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('company_name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('company_slogan')
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('company_description')
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('company_address')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('company_phone')
-                    ->tel()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('company_email')
-                    ->email()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('company_logo')
-                    ->maxLength(255),
+                Forms\Components\Section::make()->schema([
+                    Forms\Components\TextInput::make('company_name')
+                        ->required()
+                        ->maxLength(255)
+                        ->default('Общественное Объединение Центр Гражданских Инициатив "Лидер"'),
+                    Forms\Components\TextInput::make('company_slogan')
+                        ->maxLength(255),
+                    Forms\Components\RichEditor::make('company_description')
+                        ->columnSpanFull(),
+                    Forms\Components\TextInput::make('company_address')
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('company_phone')
+                        ->tel()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('company_email')
+                        ->email()
+                        ->maxLength(255),
+                    CuratorPicker::make('company_logo')
+                        ->pathGenerator(DatePathGenerator::class)
+                        ->preserveFilenames(true),
+                ])
             ]);
     }
 
