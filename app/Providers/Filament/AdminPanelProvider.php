@@ -55,7 +55,10 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugins([
-                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
-            ]);
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+                \Awcodes\Curator\CuratorPlugin::make()
+                ->registerNavigation(true)
+            ])
+            ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }
