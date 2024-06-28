@@ -62,6 +62,11 @@ class WebsiteConfigResource extends Resource
                         ->relationship('company_logo_id', 'id')
                         ->preserveFilenames(true)
                         ->label('Логотип'),
+                    CuratorPicker::make('slider_image_ids')
+                        ->multiple()
+                        ->preserveFilenames(true)
+                        ->relationship('slider_image_ids', 'id')
+                        ->label('Изображения для слайдера'),
                 ])
             ]);
     }
