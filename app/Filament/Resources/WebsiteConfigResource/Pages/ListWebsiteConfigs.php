@@ -5,6 +5,7 @@ namespace App\Filament\Resources\WebsiteConfigResource\Pages;
 use App\Filament\Resources\WebsiteConfigResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Database\Eloquent\Builder;
 
 class ListWebsiteConfigs extends ListRecords
 {
@@ -13,7 +14,12 @@ class ListWebsiteConfigs extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+
         ];
+    }
+
+    protected function query(): Builder
+    {
+        return parent::query()->with(['company_logo_id']);
     }
 }

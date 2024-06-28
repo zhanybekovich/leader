@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Awcodes\Curator\Models\Media;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class WebsiteConfig extends Model
 {
@@ -16,6 +18,11 @@ class WebsiteConfig extends Model
         'company_address',
         'company_phone',
         'company_email',
-        'company_logo'
+        'company_logo_id'
     ];
+
+    public function company_logo_id(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'company_logo_id', 'id');
+    }
 }

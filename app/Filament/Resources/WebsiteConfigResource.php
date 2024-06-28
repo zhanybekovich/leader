@@ -6,6 +6,7 @@ use App\Filament\Resources\WebsiteConfigResource\Pages;
 use App\Filament\Resources\WebsiteConfigResource\RelationManagers;
 use App\Models\WebsiteConfig;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
+use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Awcodes\Curator\PathGenerators\DatePathGenerator;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -43,7 +44,7 @@ class WebsiteConfigResource extends Resource
                         ->extraInputAttributes([
                             'style' => 'min-height: 500px',
                         ])
-//                        ->disableFloatingMenus()
+                        ->hint('Содержание данного блока будет отображатся на главной странице в секции "О нас"')
                         ->disableBubbleMenus()
                         ->label('Описание компании'),
                     Forms\Components\TextInput::make('company_address')
@@ -57,8 +58,8 @@ class WebsiteConfigResource extends Resource
                         ->email()
                         ->maxLength(255)
                         ->label('Email компании'),
-                    CuratorPicker::make('company_logo')
-                        ->pathGenerator(DatePathGenerator::class)
+                    CuratorPicker::make('company_logo_id')
+                        ->relationship('company_logo_id', 'id')
                         ->preserveFilenames(true)
                         ->label('Логотип'),
                 ])
@@ -69,14 +70,19 @@ class WebsiteConfigResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('company_logo'),
-                Tables\Columns\TextColumn::make('company_name'),
+               CuratorColumn::make('company_logo_id')
+                   ->size(60)
+                   ->label('Логотип'),
+                Tables\Columns\TextColumn::make('company_name')
+                    ->label('Название компании'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Дата создания'),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Дата обновления'),
             ])
             ->filters([
                 //
@@ -86,7 +92,6 @@ class WebsiteConfigResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
             ->paginated(false);
@@ -103,8 +108,9 @@ class WebsiteConfigResource extends Resource
     {
         return [
             'index' => Pages\ListWebsiteConfigs::route('/'),
-            'create' => Pages\CreateWebsiteConfig::route('/create'),
             'edit' => Pages\EditWebsiteConfig::route('/{record}/edit'),
         ];
     }
+
+
 }
